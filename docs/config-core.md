@@ -73,8 +73,11 @@ Three noise fields carve the caves: rooms, voids and tunnels. A block is air whe
 | `rock.deepslate-y` | `-300` | -2031 to 0 | Stone at and above this Y, deepslate below. |
 | `rock.deepslate-blend` | `8` | 0 to 64 | Height of the mixed band just below `deepslate-y`. Inside it the chance of deepslate rises linearly from top to bottom. `0` = a sharp line. |
 | `rock.bedrock-floor-layers` | `4` | 0 to 16 | Rough bedrock layers above the solid floor at Y -2032. Layer `n` is bedrock with chance `(layers + 1 - n) / (layers + 1)`: with 4, 80%, 60%, 40%, 20%. `0` = one flat layer. |
+| `rock.lava-sea-height` | `6` | 0 to 64 | Cave air from Y -2031 up to this many blocks above Y -2032 is generated as lava source blocks, so every cave that reaches the bottom ends in a flat lava sea. With 6 the sea surface is Y -2026, two blocks above the highest bedrock layer. `0` = off, bare bedrock floors. |
 
 Ores pick their stone or deepslate variant from the rock they replace, so `deepslate-y` also moves where deepslate ores start. Mining speed follows the rock: deepslate is twice as slow to mine. The player wiki shows -300 and the 8-block band on [World layout](https://craftyplayz.github.io/DwellerMC-wiki/world/layout/) and in the ore calculator; update `DW.deepslateY` in the wiki if you change it.
+
+**lava-sea-height.** Keep it above `bedrock-floor-layers`, or the tops of the bedrock bumps stick out of the lava. The lava is placed as still source blocks during generation, before ores, so ores touching the sea count as buried and follow `ores.buried-chance`. A big value (like 64) floods the lowest caves and hides a lot of ore under lava. Chunks generated before the change keep their bare floor, so a seam can show where old and new chunks meet.
 
 ## structures
 
