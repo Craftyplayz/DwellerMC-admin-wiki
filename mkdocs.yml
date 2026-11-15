@@ -1,0 +1,44 @@
+site_name: DwellerMC Admin Wiki
+repo_url: https://github.com/Craftyplayz/DwellerMC-admin-wiki
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle: { icon: material/brightness-4, name: Switch to light mode }
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: amber
+      toggle: { icon: material/brightness-7, name: Switch to dark mode }
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.action.edit
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc: { permalink: true }
+  - pymdownx.details
+  - pymdownx.superfences
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Install & fresh world: install.md
+  - Config reference:
+      - DwellerCore: config-core.md
+      - DwellerBiomes: config-biomes.md
+      - DwellerStructures: config-structures.md
+  - Technical notes: technical.md
+  - Troubleshooting: troubleshooting.md
