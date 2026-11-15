@@ -22,5 +22,5 @@ Requires **Paper 26.3** and **Java 25**. All three plugins load at `STARTUP` (`p
 
 All DwellerCore gameplay (mobs, spawn, HUD) only runs in worlds whose generator is DwellerCore's.
 
-## Repos (private, GitHub: Craftyplayz)
-`DwellerCore`, `DwellerBiomes`, `DwellerStructures`, plus this wiki. Build each with `./gradlew build`.
+## Repos (GitHub: Craftyplayz)
+Plugins (private): `DwellerCore`, `DwellerBiomes`, `DwellerStructures`. Build each with `./gradlew build`. Wikis (public): this one (unlisted) and the [player wiki](https://craftyplayz.github.io/DwellerMC-wiki/).
