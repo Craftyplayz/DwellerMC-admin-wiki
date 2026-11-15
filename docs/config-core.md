@@ -22,11 +22,14 @@ Mob scaling uses **power** `p = (hidden / 5000) ^ curve-exponent`, where `hidden
 
 | Key | Default | Used in | Effect |
 |---|---|---|---|
+| `spawn.random-cave` | `false` | `SpawnListener.java` | `true`: first join and bed-less respawns go to a random cave (below). `false`: left to the server spawn, which is [EssentialsSpawn](plugins/essentials.md) `/setspawn` on this server. Missing from older config files, where the code default is `true`. |
 | `spawn.min-y` | `-600` | `SpawnListener.java` | Lowest Y scanned for a spawn spot. |
 | `spawn.max-y` | `-300` | `SpawnListener.java` | Highest Y scanned. |
 | `spawn.radius` | `256` | `SpawnListener.java` | Random X/Z offset from the world spawn. |
 
-Used for first join and for respawns without a bed or respawn anchor. 8 random columns are scanned top-down for a solid, non-magma floor with 2 air blocks above. If none is found, a 3×3×3 room with a deepslate floor is carved at the middle Y.
+**Beds always win**, whatever `random-cave` is set to: DwellerCore notes a bed or anchor respawn location at priority LOWEST and restores it at HIGHEST, so EssentialsSpawn or another plugin can't move it.
+
+With `random-cave: true`, used for first join and for respawns without a bed or respawn anchor: 8 random columns are scanned top-down for a solid, non-magma floor with 2 air blocks above. If none is found, a 3×3×3 room with a deepslate floor is carved at the middle Y.
 
 ## hud
 

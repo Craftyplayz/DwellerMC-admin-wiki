@@ -42,5 +42,35 @@ nav:
       - DwellerCore: config-core.md
       - DwellerBiomes: config-biomes.md
       - DwellerStructures: config-structures.md
+  - Plugins:
+      - Permissions & safety:
+          - LuckPerms: plugins/luckperms.md
+          - CoreProtect: plugins/coreprotect.md
+          - WorldGuard: plugins/worldguard.md
+          - WorldEdit: plugins/worldedit.md
+          - InvSee++: plugins/invseeplusplus.md
+          - spark: plugins/spark.md
+      - EssentialsX:
+          - Overview: plugins/essentials.md
+          - Commands and permissions: plugins/essentials-commands.md
+          - Config reference: plugins/essentials-config.md
+      - Mining:
+          - Veinminer: plugins/veinminer.md
+          - CraftyTools: plugins/craftytools.md
+          - PickupBot: plugins/pickupbot.md
+      - Gameplay & building:
+          - BreweryX: plugins/breweryx.md
+          - Vaults: plugins/vaults.md
+          - V-Elevator: plugins/v-elevator.md
+          - Vertical slabs: plugins/vertical-slabs.md
+          - HeadDatabase: plugins/headdatabase.md
+          - NameColor: plugins/namecolor.md
+      - Community:
+          - DiscordSRV: plugins/discordsrv.md
+          - TAB: plugins/tab.md
+          - Plan: plugins/plan.md
+          - BlockReports: plugins/blockreports.md
+          - Citizens: plugins/citizens.md
+          - Disguises: plugins/disguises.md
   - Technical notes: technical.md
   - Troubleshooting: troubleshooting.md

@@ -24,3 +24,6 @@ All DwellerCore gameplay (mobs, spawn, HUD) only runs in worlds whose generator 
 
 ## Repos (GitHub: Craftyplayz)
 Plugins (private): `DwellerCore`, `DwellerBiomes`, `DwellerStructures`. Build each with `./gradlew build`. Wikis (public): this one (unlisted) and the [player wiki](https://craftyplayz.github.io/DwellerMC-wiki/).
+
+## Other plugins
+Third-party and helper plugins on the server each have a page under **Plugins**: permissions and safety ([LuckPerms](plugins/luckperms.md), [CoreProtect](plugins/coreprotect.md), [WorldGuard](plugins/worldguard.md)), [EssentialsX](plugins/essentials.md), mining ([Veinminer](plugins/veinminer.md), [CraftyTools](plugins/craftytools.md)), gameplay and community plugins.
