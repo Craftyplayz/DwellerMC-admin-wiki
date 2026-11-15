@@ -1,6 +1,6 @@
 # DwellerMC Admin Wiki
 
-Admin-only reference for the DwellerMC server. Everything here is taken from the plugin code and default configs.
+Admin-only reference for the DwellerMC server.
 
 Requires **Paper 26.3** and **Java 25**. All three plugins load at `STARTUP` (`paper-plugin.yml`).
 
