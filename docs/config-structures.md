@@ -18,14 +18,16 @@ File: `plugins/DwellerStructures/structures.yml`. The first start writes it with
 
 ### DwellerMC defaults
 
-Underground structures get every cave biome in `extra-biomes`: `dwellerbiomes:caves`, `dwellerbiomes:sandstone_caves`, `minecraft:lush_caves`, `minecraft:dripstone_caves`, `minecraft:sulfur_caves`, `minecraft:deep_dark`.
+Mineshafts, strongholds and trial chambers get every cave biome in `extra-biomes`: `dwellerbiomes:caves`, `dwellerbiomes:sandstone_caves`, `minecraft:lush_caves`, `minecraft:dripstone_caves`, `minecraft:sulfur_caves`, `minecraft:deep_dark`.
 
 | Structure | extra-biomes | y | Set (spacing / separation / frequency) |
 |---|---|---|---|
-| `ancient_city` | cave biomes | `[-1600, -400]` | `ancient_cities`: 24 / 8 / 1.0 |
-| `trial_chambers` | cave biomes | `[-800, -100]` | `trial_chambers`: 34 / 12 / 1.0 |
-| `mineshaft` | cave biomes | Minecraft's own (not editable) | `mineshafts`: 1 / 0 / 0.004 |
-| `stronghold` | cave biomes | Minecraft's own (not editable) | `strongholds`: distance 32, spread 3, count 128 |
+| `ancient_city` | `[]` (vanilla tag: Deep Dark only) | `[-1950, -1450]` | `ancient_cities`: 24 / 8 / 1.0 |
+| `trial_chambers` | cave biomes | `[-1990, -640]` | `trial_chambers`: 34 / 12 / 1.0 |
+| `mineshaft` | cave biomes | Minecraft's own, limited to Y -1000..-17 by DwellerCore | `mineshafts`: 1 / 0 / 0.008 |
+| `stronghold` | cave biomes | Minecraft's own, limited to below Y -500 by DwellerCore | `strongholds`: 64 / 32 / 1.0 (spread over the world, not rings) |
+
+Mineshaft and stronghold heights can't be set here: Minecraft places them at a random height below sea level. DwellerCore drops the ones outside its `structures.height-limits` (see [DwellerCore config](config-core.md#structures)), so their sets are tuned up to make up for the dropped ones. Mineshafts: about 45% of attempts land inside Y -1000..-17, so 0.008 gives roughly vanilla's 0.4% per chunk.
 
 Every other structure keeps its vanilla biomes, so in a DwellerCore + DwellerBiomes world it doesn't spawn (those biomes don't exist there).
 
@@ -41,7 +43,7 @@ Structures listed in the same set share these numbers.
 | `spacing` | 1–4096 | Average distance between spawn attempts, in chunks. |
 | `separation` | 0 to spacing − 1 | Minimum distance between attempts, in chunks. |
 | `frequency` | above 0, up to 1 | Chance each attempt spawns. |
-| `distance` / `spread` / `count` | 0–1023 / 0–1023 / 1–4095 | Strongholds only (rings around 0,0). |
+| `distance` / `spread` / `count` | 0–1023 / 0–1023 / 1–4095 | Strongholds only: rings around 0,0. Ignored when the set has `spacing`, which switches strongholds to spread placement (`spacing` needs `separation` too). |
 
 Out-of-range values: the whole set is skipped with a warning and stays vanilla.
 

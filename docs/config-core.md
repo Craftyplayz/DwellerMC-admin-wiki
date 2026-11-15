@@ -18,6 +18,25 @@ Mob scaling uses **power** `p = (hidden / 5000) ^ curve-exponent`, where `hidden
 |---|---|---|---|
 | `caves.biome-boost` | `{}` | `DwellerGenerator.java`, `CaveNoise.java` | Map of biome key → extra cave density, e.g. `{ "minecraft:lush_caves": 0.12 }`. Added to the room and huge-void noise (not tunnels). Uses the biome from DwellerBiomes' provider; empty map = no biome lookups. |
 
+## structures
+
+| Key | Default | Used in | Effect |
+|---|---|---|---|
+| `structures.height-limits` | stronghold `[-2032, -500]`, mineshaft and mineshaft_mesa `[-1000, -17]` | `StructureFilter.java` | Structure id → `[min, max]`. The whole bounding box must fit inside, or the structure is cancelled when it generates. |
+
+Any structure reaching Y -16 or higher is always cancelled, with or without a limit. Use limits for structures whose height Minecraft picks itself (strongholds, mineshafts); jigsaw structures get a fixed `y` in [DwellerStructures](config-structures.md) instead. Cancelled attempts are simply missing, so raise the set's frequency or lower its spacing to compensate.
+
+## Dungeons (datapack)
+
+Not a config key: `src/main/resources/datapack/data/minecraft/worldgen/placed_feature/monster_room*.json`, written by `tools/dungeons.py`.
+
+- `monster_room` (vanilla Y 0 and up, which would be the roof): count 0.
+- `monster_room_deep`: 89 attempts per chunk, spread over 50-block bands with a weighted height list. Density: none above Y -250, ×0.6 at -250, ×1 at -1000, ×2 at -1500, ×2 down to -2026, linear between. ×1 = vanilla's average of 14 attempts per chunk over 378 blocks of height.
+- Applies to every biome, because all cave biomes list these two features.
+- To change it: edit `POINTS` in `tools/dungeons.py`, run `py tools/dungeons.py`, rebuild, restart. New chunks only.
+
+Mobs from mob spawners (`SpawnReason.SPAWNER`: dungeons and any placed spawner) are never leveled, so they also never become elites. Trial spawners are leveled.
+
 ## spawn
 
 | Key | Default | Used in | Effect |
