@@ -7,8 +7,8 @@ File: `plugins/DwellerBiomes/config.yml` (default: `DwellerBiomes/src/main/resou
 
 **When changes apply:** a full **restart** (not `/reload`): the biome datapack is built during bootstrap. Changes only affect **newly generated chunks**. A biome name that isn't loaded stops startup with `Biome ... is not loaded. Restart the server (not /reload) after adding biomes.`
 
-!!! note "TODO: vanilla ores in vanilla-biome patches"
-    The committed config still lets `lush_caves`, `dripstone_caves`, `sulfur_caves` and `deep_dark` run Minecraft's own ore features (coal, iron, gold, redstone, lapis, diamond, copper) on top of [DwellerCore ores](config-core.md#ores-new-chunks). A change that strips them (new per-biome key `remove-features`) is in progress but not committed yet. Update this page when it lands.
+!!! note "No vanilla ores"
+    `lush_caves`, `dripstone_caves`, `sulfur_caves` and `deep_dark` set `remove-features: *vanilla-ores`, so Minecraft's own ore features (17 listed under the top-level `vanilla-ores` anchor: coal, iron, gold, redstone, diamond, lapis, copper) are stripped. [DwellerCore ores](config-core.md#ores-new-chunks) are the only ore source. If the vanilla biome JSON can't be read from the server jar at startup, the server refuses to start instead of silently keeping vanilla ores.
 
 ## Top-level keys
 
@@ -16,6 +16,7 @@ File: `plugins/DwellerBiomes/config.yml` (default: `DwellerBiomes/src/main/resou
 |---|---|---|
 | `worlds` | `[world]` | Worlds that get the roof populator and biome restyling. The biome provider itself is used by any world whose generator asks for it (DwellerCore does). |
 | `fallback-biome` | `caves` | Biome for cave cells outside every patch. Required. |
+| `vanilla-ores` | anchor `&vanilla-ores` | List of the 17 vanilla ore feature ids, reused by `remove-features`. Not read directly by the code. |
 | `underground-features` | anchor `&underground` | Shared feature list reused by custom biomes (see below). Not read directly by the code; it's a YAML anchor. |
 
 ## roof
@@ -37,7 +38,8 @@ Names may only use `a-z`, `0-9`, `_`. Each entry becomes `dwellerbiomes:<name>`,
 
 | Key | Effect |
 |---|---|
-| `biome` | Optional. Use an existing biome (e.g. `minecraft:lush_caves`). No JSON is generated and `definition` is ignored. |
+| `biome` | Optional. Use an existing biome (e.g. `minecraft:lush_caves`). `definition` is ignored. No JSON is generated unless `remove-features` is set. |
+| `remove-features` | Optional, only with a `minecraft:` `biome`. Feature ids removed from that vanilla biome; written as an override of the vanilla biome JSON in the datapack. Removing only, so it can't cause a feature order cycle. |
 | `placement.min-y` / `max-y` | Depth range of the patches. Patches shrink within 32 blocks of either edge. |
 | `placement.size` | Patch size in blocks (noise scale; vertical scale is 0.6× so patches are flatter than wide). Default 120. |
 | `placement.rarity` | Noise threshold, default 0.35. Higher = rarer. Overlapping biomes: the one with the highest noise value wins. |
