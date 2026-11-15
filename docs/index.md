@@ -2,7 +2,7 @@
 
 Admin-only reference for the DwellerMC server.
 
-Requires **Paper 26.3** and **Java 25**. All three plugins load at `STARTUP` (`paper-plugin.yml`).
+Requires **Paper 26.3** and **Java 25**. The three plugins below load at `STARTUP` (`paper-plugin.yml`). A fourth plugin, [DwellerSurface](config-surface.md), adds the burning surface world.
 
 ## The three plugins
 
@@ -19,8 +19,9 @@ Requires **Paper 26.3** and **Java 25**. All three plugins load at `STARTUP` (`p
 3. DwellerBiomes also attaches a **populator** to each world in its `worlds:` list. It places the bedrock roof and restyles rock inside biome patches, using the same per-cell decision as the provider, so blocks always match F3.
 4. **DwellerStructures** rewrites vanilla structure JSON. Structures check the biome the provider reports, so underground structures only spawn in DwellerBiomes biomes listed in their `extra-biomes`.
 5. DwellerCore cancels any structure whose bounding box reaches Y -16 or higher (`StructureFilter`).
+6. **DwellerSurface** adds a separate flat world, the surface, reached through one admin-built portal and only with a timed suit. It gets its mob levels from DwellerCore. See [DwellerSurface config](config-surface.md).
 
-All DwellerCore gameplay (mobs, spawn, HUD) only runs in worlds whose generator is DwellerCore's.
+All DwellerCore gameplay (mobs, spawn, HUD) only runs in worlds whose generator is DwellerCore's, plus mob levels in worlds listed in `mobs.fixed-level-worlds`.
 
 ## Repos (GitHub: Craftyplayz)
 Plugins (private): `DwellerCore`, `DwellerBiomes`, `DwellerStructures`. Build each with `./gradlew build`. Wikis (public): this one (unlisted) and the [player wiki](https://craftyplayz.github.io/DwellerMC-wiki/).

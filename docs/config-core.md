@@ -82,7 +82,7 @@ Default types:
 
 ## mobs
 
-Applies to hostile mobs (`Enemy`) in DwellerCore worlds, except types in `no-scale`.
+Applies to hostile mobs (`Enemy`) in DwellerCore worlds and in worlds listed in `mobs.fixed-level-worlds`, except types in `no-scale`.
 
 | Key | Default | Used in | Effect |
 |---|---|---|---|
@@ -96,6 +96,7 @@ Applies to hostile mobs (`Enemy`) in DwellerCore worlds, except types in `no-sca
 | `mobs.max-toughness` | `6` | `MobLevels.java` | `+6 × p` armor toughness. |
 | `mobs.follow-range-min` / `-max` | `16` / `48` | `MobLevels.java` | Follow range = max(vanilla, `16 + 32 × p`). |
 | `mobs.name-tag-distance` | `12` | `MobDisplayTask.java` | Name tag (`Lv N Name ❤ hp/max`) shows within this many blocks of a player. |
+| `mobs.fixed-level-worlds` | `world_surface: 50` | `DwellerCore.java`, `MobLevels.java`, `MobDisplayTask.java`, `EliteManager.java` | Map of world name to a fixed area level, for worlds DwellerCore did not generate (the [DwellerSurface](config-surface.md) world). Hostile mobs there get leveled like in a DwellerCore world, with area level = the number (spread and the rest unchanged), no depth involved, and show the name tag. Elite chance there uses `(level - 1) / (max-level - 1)` as the depth fraction, so 50 gives the bottom-of-world chance from `elites.chance`. The name must match the world exactly; a wrong name means no levels. Other DwellerCore systems (spawn mix, HUD, generator) still only run in DwellerCore worlds. Needs a restart. |
 | `mobs.no-scale` | `[WARDEN, WITHER, ENDER_DRAGON, ELDER_GUARDIAN]` | `MobLevels.java`, `SpawnMix.java` | Never leveled, never swapped by spawn mix. |
 | `mobs.status-hit-max-chance` | `0.35` | `MobPerks.java` | Chance per hit on a player = `0.35 × p`: random Slowness, Weakness, Hunger, Poison or Mining Fatigue for 3–6 s, level II at mob level 35+. |
 | `mobs.rewards.xp-max-multiplier` | `10` | `MobRewards.java` | XP × `1 + (10 − 1) × p`. Player kills only. |

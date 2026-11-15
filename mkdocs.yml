@@ -42,6 +42,7 @@ nav:
       - DwellerCore: config-core.md
       - DwellerBiomes: config-biomes.md
       - DwellerStructures: config-structures.md
+      - DwellerSurface: config-surface.md
   - Plugins:
       - Permissions & safety:
           - LuckPerms: plugins/luckperms.md

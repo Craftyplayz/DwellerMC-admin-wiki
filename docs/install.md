@@ -20,6 +20,10 @@
 5. Delete or rename the old `world` folder.
 6. Start the server.
 
+## Optional: the surface
+
+[DwellerSurface](config-surface.md) is a fourth plugin. Build it with `./gradlew build`, copy the jar into `plugins/`, restart, then build and mark the two portals as described in [first-time setup](config-surface.md#first-time-setup). It needs no `bukkit.yml` entry and works with DwellerCore installed or not.
+
 ## Restart, never /reload
 
 All three plugins build or register datapacks during bootstrap, before worlds load. Config changes need a **full restart**. World-generation changes only affect **chunks generated after the restart**.
