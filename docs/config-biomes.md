@@ -7,7 +7,7 @@ File: `plugins/DwellerBiomes/config.yml` (default: `DwellerBiomes/src/main/resou
 
 **When changes apply:** a full **restart** (not `/reload`): the biome datapack is built during bootstrap. Changes only affect **newly generated chunks**.
 
-**Bad values never stop the server.** A wrong type or out-of-range number logs a warning naming the key and the default is used. An unknown block, an unknown biome or a bad decoration row is skipped with a warning, and the rest of the biome still works. A whole cave biome is skipped (not placed) when its biome isn't loaded or its `min-y` is above `max-y`. Example:
+**Bad values never stop the server.** A wrong type or out-of-range number logs a warning naming the key and the default is used. An unknown block, an unknown biome or a bad decoration row is skipped with a warning, and the rest of the biome still works. A whole cave biome is skipped (not placed) when its biome isn't loaded or its `min-y` is above `max-y`. A missing or broken `biomes:` section writes no biome files (`Config biomes: missing or not a section`); only files from earlier starts exist then. Example:
 
 ```
 [DwellerBiomes] Config roof.base-y: got '99', expected a whole number from -18 to 15. Using the default: 0
@@ -22,7 +22,7 @@ A skipped biome keeps the JSON file written on earlier starts, so chunks that al
 
 | Key | Default | Effect |
 |---|---|---|
-| `worlds` | `[world]` | Worlds that get the roof populator and biome restyling. Names are case-sensitive. The biome provider itself is used by any world whose generator asks for it (DwellerCore does). |
+| `worlds` | `[world]` | Worlds that get the roof populator and biome restyling. Names are case-sensitive. A value that isn't a list logs a warning and uses `[world]`. The biome provider itself is used by any world whose generator asks for it (DwellerCore does). |
 | `fallback-biome` | `caves` | Biome for cave cells outside every patch. A missing biome falls back to `caves`. |
 | `vanilla-ores` | anchor `&vanilla-ores` | List of the 17 vanilla ore feature ids, reused by `remove-features`. Not read directly by the code. |
 | `underground-features` | anchor `&underground` | Shared feature list reused by custom biomes (see below). Not read directly by the code; it's a YAML anchor. |
@@ -45,9 +45,9 @@ A world missing from `worlds` gets no roof at all: DwellerCore leaves the band Y
 | `roof.spike-weight` | `0.4` | 0 to 2 | How far the spikes hang down. `0` = smooth underside. |
 | `roof.fringe-chances` | `[0.5, 0.2]` | up to 8 numbers, 0 to 1 | Speckled fringe: chance per column of an extra roof block 1, 2... blocks below the solid underside (only where that block is rock). `[]` = clean underside. |
 
-The roof biome starts at `base-y - underside-min - underside-depth` (Y -16 with defaults). DwellerCore leaves Y -16..0 solid and air above, and carves caves only below Y -17, so keep the roof inside about Y -18..15.
+The roof biome starts at `base-y - underside-min - underside-depth` (Y -16 with defaults). DwellerCore leaves Y -16..0 solid and air above, and carves caves only below Y -17, so keep the lowest underside, `base-y - underside-min - underside-depth`, at Y -16 or above, and the top at Y 15 or below. `roof.base-y` itself accepts -18 to 15. The fringe hangs up to `fringe-chances` blocks lower, but only replaces rock, never cave air.
 
-**What breaks.** An underside below Y -18 (for example `underside-depth: 20`) cuts bedrock into the top of the caves; above Y -16 it leaves a layer of normal stone under the roof that players can tunnel through sideways. `top-height` reaching past Y 15 is clipped by the world height. `roof.block` other than bedrock (for example `obsidian`) can be mined through, which gives players the open air above Y 0; [DwellerCore](config-core.md)'s burrower elites can't break bedrock, but they dig through anything up to `max-hardness`. Spike and fringe changes are cosmetic.
+**What breaks.** An underside below Y -16 (for example `underside-depth: 20`) fills the top of the caves (they start at Y -17) with roof blocks; above Y -16 it leaves a layer of normal stone under the roof that players can tunnel through sideways. `top-height` reaching past Y 15 is clipped by the world height. `roof.block` other than bedrock (for example `obsidian`) can be mined through, which gives players the open air above Y 0; [DwellerCore](config-core.md)'s burrower elites can't break bedrock, but they dig through anything up to `max-hardness`. Spike and fringe changes are cosmetic.
 
 ## patches
 
@@ -75,7 +75,7 @@ Names may only use `a-z`, `0-9`, `_`; any other name is skipped with a warning. 
 |---|---|---|---|
 | `biome` | own name | biome id | Optional. Use an existing biome (e.g. `minecraft:lush_caves`). `definition` is ignored. No JSON is generated unless `remove-features` is set. |
 | `remove-features` | none | feature ids | Optional, only with a `minecraft:` `biome`. Feature ids removed from that vanilla biome; written as an override of the vanilla biome JSON in the datapack. Removing only, so it can't cause a feature order cycle. |
-| `placement.min-y` / `max-y` | | -2032 to 15 | Depth range of the patches. `min-y` above `max-y` skips the biome. |
+| `placement.min-y` / `max-y` | `-2031` / `0` | -2032 to 15 | Depth range of the patches. `min-y` above `max-y` skips the biome. |
 | `placement.size` | `120` | 1 to 100000 | Patch size in blocks (noise scale; vertical scale is `size x patches.flatness`). |
 | `placement.rarity` | `0.35` | -1 to 1 | Noise threshold. Higher = rarer. Overlapping biomes: the one with the highest noise value wins. |
 | `blocks.replace` | none | block ids | Only these blocks are restyled. Ores and anything else stay. Unknown blocks are skipped. |

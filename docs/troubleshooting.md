@@ -7,7 +7,7 @@
 | Log: `Config biomes.<name>.biome: biome ... is not loaded` (biome not placed) | A biome was added and the server was `/reload`ed, or the name is wrong | Full restart. Check spelling in `config.yml` ([DwellerBiomes](config-biomes.md)). |
 | Log: `[DwellerBiomes] Config ...: unknown block` | Typo in a block name; that block is skipped | Fix the block name ([DwellerBiomes](config-biomes.md)). |
 | Log: `Its features were NOT removed, so its vanilla ores generate in new chunks` | A `biome: minecraft:...` id doesn't exist in the server jar | Fix the id and restart before more chunks generate ([DwellerBiomes](config-biomes.md)). |
-| Server won't start after editing `structures.yml` | A biome id in a `biomes:` list doesn't exist | Fix or remove it. Prefer `extra-biomes` (optional entries). |
+| A structure stopped spawning after editing `structures.yml` | Every biome in its `biomes:` list is missing (they are optional, so missing ones are skipped) | Check the ids; list the cave biomes for an underground world ([DwellerStructures](config-structures.md)). |
 | Log: `Could not build the structure datapack; structures stay vanilla` | `structures.yml` isn't valid YAML | Fix the YAML and restart ([DwellerStructures](config-structures.md)). |
 | Log: `generator doesn't use the biome provider: structures won't see custom biomes` | World isn't using DwellerCore's generator | Set `generator: DwellerCore` in `bukkit.yml` for that world. |
 | A structure never appears | Its biomes don't exist in the cave world, or it reaches Y -16 and gets cancelled | Add cave biomes to `extra-biomes`; keep `y` below -16. |
