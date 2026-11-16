@@ -1,6 +1,6 @@
 # DwellerTools config
 
-File: `plugins/DwellerTools/config.yml` (default: `DwellerTools/src/main/resources/config.yml`). Every key sits under `grappling-hook:`.
+File: `plugins/DwellerTools/config.yml` (default: `DwellerTools/src/main/resources/config.yml`). Keys sit under `grappling-hook:`, `drill:`, `hammer:` or `paxel:`, one section per tool.
 
 **When changes apply:** a full **restart**. There is no reload command and the config is read once at startup, recipe and messages included.
 
@@ -8,7 +8,7 @@ File: `plugins/DwellerTools/config.yml` (default: `DwellerTools/src/main/resourc
 
 ## What it does
 
-DwellerTools holds custom tools. The first is the **Grappling Hook**: right-click throws a hook at a block and a climbable rope drops from it, sneak + right-click rappels down from an edge. Players climb the ropes like ladders. Ropes are temporary and removed by the plugin.
+DwellerTools holds custom tools: the Grappling Hook, and the [Drill, Hammer and Paxel](#drill-hammer-and-paxel) mining tools. The first is the **Grappling Hook**: right-click throws a hook at a block and a climbable rope drops from it, sneak + right-click rappels down from an edge. Players climb the ropes like ladders. Ropes are temporary and removed by the plugin.
 
 How a rope is built: one `minecraft:light` block (level 0, invisible and not solid) per rope block, made climbable by the plugin's own datapack (it adds `minecraft:light` to `#minecraft:climbable`), plus one `item_display` per block that shows the rope texture, and one `item_display` for the hook at the top. Ropes only ever replace air.
 
@@ -125,12 +125,73 @@ Shown on the action bar (MiniMessage). `{range}` and `{length}` are replaced.
 | `messages.world-disabled` | `The grappling hook doesn't work here` | The world is in `disabled-worlds`. |
 | `messages.short-rope` | `The rope doesn't reach the bottom ({length} blocks)` | The rope ends in air or above lava. `{length}` is its length. |
 
+## Drill, Hammer and Paxel
+
+Three mining tools built on netherite tools, each with its own top-level section. All three have the same `enabled`, `item.*` and `recipe.*` keys, described once here. Item settings (name, lore, model, durability, repair material) are stored on the item when it is crafted, so **existing items keep their old values**. The three recipes are placeholders until final ones are picked.
+
+### Shared keys (`drill.`, `hammer.`, `paxel.`)
+
+| Key | Default | Unit | Effect |
+|---|---|---|---|
+| `enabled` | `true` | boolean | `false`: no recipe. Hammer: no square. Paxel: no dirt paths. Drill: anvils and grindstones still keep its Efficiency level, but it can no longer be repaired with its repair material in an anvil. Items players already own stay in their inventories and still work as plain netherite tools; a Paxel keeps its mining rules because they are stored on the item. |
+| `item.name` | `<white>Drill`, `<white>Hammer`, `<white>Paxel` | MiniMessage | Item name. |
+| `item.lore` | one grey line each | list of MiniMessage | Lore lines. |
+| `item.model` | `dwellermc:drill`, `dwellermc:hammer`, `dwellermc:paxel` | model id | Item model from the [resource pack](resource-pack.md). A model the pack does not have shows the plain netherite tool. |
+| `item.durability` | `2031` | uses, 1 to 100000 | Uses before it breaks. Vanilla netherite is 2031. Existing items keep their old maximum. |
+| `item.repair-material` | `netherite_ingot` | item id | Anvil repair material, 25% per item. An unknown id logs `Config <tool>.item.repair-material: unknown item ...` and the default is used. |
+| `recipe.enabled` | `true` | boolean | `false`: the tool can't be crafted. Other plugins can still give the item. |
+| `recipe.shape` | `["RRR", " N ", " N "]`, `["DDD", " N ", " N "]`, `["EEE", " N ", " N "]` | 1 to 3 rows of 1 to 3 characters | Shaped grid, a space is an empty slot. The mirrored shape also works. |
+| `recipe.ingredients` | Drill: `R: redstone_block`, `N: netherite_ingot`. Hammer: `D: diamond_block`, `N: netherite_ingot`. Paxel: `E: emerald_block`, `N: netherite_ingot` | character to item id | Every non-space character in `shape` needs an item. |
+| `recipe.give-on-join` | `true` | boolean | Every player has the recipe in their recipe book from the moment they join. |
+
+A bad shape or ingredient list logs `Config <tool>.recipe: ... Using the default recipe` and the whole default recipe is used.
+
+Anvil rules, the same for all three: repair with `item.repair-material`, combine two tools of the same kind, add enchanted books (vanilla rules decide which enchantments fit the base item), rename. A tool never merges into a different item; any other combination gives no result. The crafting grid never accepts one of these tools as an ingredient, which also stops the vanilla grid repair that would wipe the item.
+
+### drill
+
+| Key | Default | Unit | Effect |
+|---|---|---|---|
+| `efficiency-level` | `10` | level, 1 to 255 | Efficiency level on the Drill. Vanilla tops out at V. The level is re-applied whenever an anvil or grindstone result is built, so an Efficiency book (which vanilla would cap at V) or a grindstone (which removes enchantments) can't change it. |
+
+- Around 10 already breaks stone and deepslate instantly. Higher values add little for those blocks.
+- A Drill made earlier keeps its old level on the item until it goes through an anvil or grindstone, where it is set to the current value.
+- Every other pickaxe enchantment goes on through the vanilla anvil rules, `dwellerenchants:unbreakable` included once that plugin exists. This plugin does not limit enchantments.
+- Set very high, mining is effectively instant for everything breakable, which makes ore depth matter less.
+
+### hammer
+
+| Key | Default | Unit | Effect |
+|---|---|---|---|
+| `radius` | `1` | blocks, 1 to 3 | Size of the square around the mined block: `1` = 3x3, `2` = 5x5, `3` = 7x7. It is one block deep, flat against the face the player hit. |
+| `skip-harder-blocks` | `true` | boolean | Blocks harder than the mined block are left alone, so mining stone doesn't break obsidian beside it. `false` = every eligible block in the square breaks. |
+| `excluded-blocks` | `[]` | list of block ids | Blocks the square never breaks. The block the player mines directly still breaks. Unknown ids log a warning naming the key. |
+
+- A block in the square is only broken if it is in `#minecraft:mineable/pickaxe`, a netherite pickaxe gets a drop from it, and it is not unbreakable (hardness below 0, such as bedrock). `excluded-blocks` and `skip-harder-blocks` apply on top. The three base rules can't be turned off.
+- The square is always on. There is no sneak toggle.
+- Each extra block goes through the normal break event (`Player#breakBlock`), so [WorldGuard](plugins/worldguard.md) regions, [CoreProtect](plugins/coreprotect.md) logging, Fortune, Silk Touch and XP drops apply to every block. A protected block simply isn't broken.
+- Each block, extra ones included, costs 1 durability (Unbreaking can save it). If the tool breaks mid-square the rest of the square is left.
+- A large `radius` destroys builds quickly: 7x7 is 48 extra blocks per swing. Protect builds with WorldGuard regions.
+- The face comes from the last block the player started mining. A block broken instantly, with no damage phase, reuses the previous face.
+
+### paxel
+
+| Key | Default | Unit | Effect |
+|---|---|---|---|
+| `mining-speed` | `9` | multiplier, 1 to 100 | Mining speed on every pickaxe, axe and shovel block, before Efficiency and Haste. Vanilla netherite tools are 9. Stored on the item when crafted. |
+| `path-sound` | `minecraft:item.shovel.flatten` | sound id | Played when a dirt path is made. `""` = silent. |
+
+- The Paxel is a netherite axe underneath: axe attack damage, axe enchantments, strips logs and scrapes or unwaxes copper by vanilla behaviour.
+- Mining rules are a `tool` component on the item: netherite tier and `mining-speed` on `#mineable/pickaxe`, `#mineable/axe` and `#mineable/shovel`, no drops from blocks that need more than netherite. Because it is stored on the item, **changing `mining-speed` only affects new Paxels**, and `enabled: false` does not remove the rules from existing ones.
+- Dirt paths: right-click grass block, dirt, podzol, coarse dirt, mycelium or rooted dirt with air above, not on the bottom face. It costs 1 durability. Other plugins can cancel the interaction as for any right-click.
+
 ## Interactions
 
 - **[DwellerCore](config-core.md#resource-pack)** sends the resource pack that holds the hook and rope textures. DwellerTools sends nothing itself. If `resource-pack.enabled` is `false`, deliver the pack some other way or players see the base items.
 - **[DwellerSurface](config-surface.md)**: the hook works in the surface world unless that world is in `disabled-worlds`.
 - **Light blocks and the climbable tag.** `minecraft:light` is climbable only while the `dwellertools` datapack is loaded. A plugin or command that clears light blocks cuts ropes; the plugin notices at its next check and removes the rest of the rope.
 - **[WorldGuard](plugins/worldguard.md) and [CoreProtect](plugins/coreprotect.md)**: the plugin places rope blocks itself, not on behalf of the player, so region flags do not stop a rope and CoreProtect does not log it. To keep players from hooking a protected building, put its blocks in `grapple.excluded-blocks` or its world in `disabled-worlds`. Players breaking or placing blocks next to ropes are logged as usual.
+- **Mining tools and protection plugins.** The Hammer's extra blocks are broken through the normal break event, so [WorldGuard](plugins/worldguard.md) and [CoreProtect](plugins/coreprotect.md) treat each one as the player's own break. [Veinmine](plugins/veinminer.md) and other break-event plugins see every block too.
 - Anyone can climb any rope, and mobs can too, because the tag is vanilla's climbable tag.
 - Creative and spectator players are not exempt.
 
@@ -158,6 +219,7 @@ Never rename or remove these. Existing items, entities and chunks carry them.
 |---|---|---|
 | `dwellertools:grappling_hook` | item | Marks a Grappling Hook. The same name is also used for the recipe and the cooldown group. |
 | `dwellertools:rope` | `item_display` entity | Marks rope and hook displays, so leftovers can be removed. |
+| `dwellertools:drill`, `dwellertools:hammer`, `dwellertools:paxel` | item | Marks each mining tool. The same names are the recipe keys. |
 | `dwellertools:rope_blocks` | chunk | Packed positions of rope blocks, for crash cleanup. |
 | `dwellertools:rope_mining` | attribute modifier | The mining speed modifier on `block_break_speed`. |
 
@@ -170,6 +232,8 @@ Never rename or remove these. Existing items, entities and chunks carry them.
 | Throws always fail with `The hook can't catch that` | `excluded-blocks`, a face switched off, or the target is not a full solid block | Check `grapple.ceiling`, `wall`, `ledge` and `excluded-blocks`. |
 | Log `Config grappling-hook.recipe: ...` | Bad shape or ingredient | Fix it; the default recipe is used meanwhile. |
 | Hooks made before a config change behave differently | Name, lore, base item, model, durability and repair material are stored on the item | Only new hooks get the new values. |
+| Hammer breaks nothing extra | `hammer.enabled` is `false`, or everything around is excluded, harder, or not a pickaxe block | Check `hammer.enabled`, `excluded-blocks`, `skip-harder-blocks`. |
+| Drill Efficiency is not at the configured level | It was made with an older `efficiency-level` | Put it through an anvil or grindstone, or craft a new one. |
 | Invisible blocks stay after a crash | The chunk has not been loaded since | They are removed the next time it loads. |
 
 ## Links

@@ -32,6 +32,8 @@ DwellerCore, DwellerBiomes, DwellerStructures and DwellerTools are `load: STARTU
 - The spawn search scans at most 8 columns (one chunk load each) before carving a room.
 - Name tags update every 10 ticks for mobs within 24 blocks of a player. Elite abilities and boss bars tick every 20 ticks.
 - DwellerCore downloads the resource pack's SHA-1 once at startup, off the main thread. See [Resource pack](resource-pack.md).
+- DwellerTools' Hammer breaks the extra blocks of its square with `Player#breakBlock` from a MONITOR `BlockBreakEvent` handler. A per-player recursion guard stops those breaks from starting another square. The face comes from the player's last `BlockDamageEvent`.
+- The Paxel's mining rules are a `tool` data component set at craft time. The Drill's Efficiency is an unsafe enchantment re-applied to the result in `PrepareAnvilEvent` and `PrepareGrindstoneEvent`.
 - DwellerTools checks ropes every `rope.check-ticks` (5) ticks and only loops over ropes that exist.
 
 See also: [DwellerCore config](config-core.md), [Troubleshooting](troubleshooting.md).

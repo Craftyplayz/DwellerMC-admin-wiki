@@ -2,7 +2,7 @@
 
 Admin-only reference for the DwellerMC server.
 
-Requires **Paper 26.3** and **Java 25**. The three plugins below load at `STARTUP` (`paper-plugin.yml`). Two more plugins: [DwellerSurface](config-surface.md) adds the burning surface world, and [DwellerTools](config-tools.md) adds custom tools (the Grappling Hook). DwellerCore sends the [resource pack](resource-pack.md) they use.
+Requires **Paper 26.3** and **Java 25**. The three plugins below load at `STARTUP` (`paper-plugin.yml`). Two more plugins: [DwellerSurface](config-surface.md) adds the burning surface world, and [DwellerTools](config-tools.md) adds custom tools (the Grappling Hook, Drill, Hammer and Paxel). DwellerCore sends the [resource pack](resource-pack.md) they use.
 
 ## The three plugins
 

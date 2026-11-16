@@ -1,6 +1,6 @@
 # Resource pack
 
-The server has one required resource pack. It holds the textures and item models for custom items (the [Grappling Hook](config-tools.md) and its rope). It lives in its own public repo, `DwellerMC-resourcepack` (GitHub: Craftyplayz), and [DwellerCore](config-core.md#resource-pack) sends it to every player on join.
+The server has one required resource pack. It holds the textures and item models for custom items (the [Grappling Hook](config-tools.md) and its rope, and the Drill, Hammer and Paxel). It lives in its own public repo, `DwellerMC-resourcepack` (GitHub: Craftyplayz), and [DwellerCore](config-core.md#resource-pack) sends it to every player on join.
 
 ## Fixed links
 
@@ -26,7 +26,7 @@ Keep `resource-pack` in `server.properties` **empty**. DwellerCore replaces it, 
 | Path | What it is |
 |---|---|
 | `pack.mcmeta`, `pack.png` | Pack metadata (pack format 97 for Minecraft 26.3, `min_format` and `max_format`) and icon. |
-| `assets/dwellermc/items/` | Item model definitions (`grappling_hook.json`, `rope.json`). The names are the model ids used in config: `dwellermc:grappling_hook` is `item.model` and `dwellermc:rope` is `rope.model` in [DwellerTools](config-tools.md). |
+| `assets/dwellermc/items/` | Item model definitions (`grappling_hook.json`, `rope.json`, `drill.json`, `hammer.json`, `paxel.json`). The names are the model ids used in config: `dwellermc:grappling_hook` is `item.model` and `dwellermc:rope` is `rope.model` in [DwellerTools](config-tools.md), and `dwellermc:drill`, `dwellermc:hammer` and `dwellermc:paxel` are the `item.model` of the mining tools. Each tool's texture is `assets/dwellermc/textures/item/<id>.png` and `art/<id>/gen.py` draws it. |
 | `assets/dwellermc/models/` | The models the item definitions point to. |
 | `assets/dwellermc/textures/` | Textures (PNG). |
 | `art/` | Scripts that draw the textures (`py gen.py` in each folder). Not part of the zip: copy a result into `assets/`. |
