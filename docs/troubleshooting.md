@@ -14,4 +14,6 @@
 | Log: `Config ores.types.<name>: not an ore, or veins/size are not numbers from 0 to 1000. Ore skipped` | `veins` or `size` isn't a number in range, or the ore name doesn't match a block | Fix `ores.types` ([DwellerCore](config-core.md#ores-new-chunks)). |
 | Log: `[DwellerCore] Config <key>: got ..., expected ... Using the default` | A DwellerCore value has the wrong type or is out of range; the server runs on the default | Fix the key; the ranges are in the [DwellerCore config](config-core.md) tables. Restart. |
 | Surface mobs have no level, or no suit pieces drop | World name differs from `mobs.fixed-level-worlds`, or DwellerCore is missing | See [DwellerSurface problems](config-surface.md#common-problems). |
+| Players are kicked on join about the resource pack | They declined it, or the download failed | They set Server Resource Packs to Enabled in the server list (Edit). See [Resource pack](resource-pack.md#troubleshooting). |
+| Grappling Hook ropes are there but not climbable | The `dwellertools` datapack is not loaded | Full restart. See [DwellerTools](config-tools.md#common-problems). |
 | A config change did nothing | Old chunks keep their old generation; mobs keep spawn-time stats | Explore new chunks or start a fresh world. |

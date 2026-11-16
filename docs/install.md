@@ -9,6 +9,7 @@
     - `DwellerCore-<version>.jar`
     - `DwellerBiomes-<version>.jar`
     - `DwellerStructures-<version>.jar`
+    - `DwellerTools-<version>.jar` (optional, see below)
 2. Copy the jars into the server's `plugins/` folder.
 3. In `bukkit.yml`, set the generator (use your level name if it isn't `world`):
     ```yaml
@@ -24,15 +25,19 @@
 
 [DwellerSurface](config-surface.md) is a fourth plugin. Build it with `./gradlew build`, copy the jar into `plugins/`, restart, then build and mark the two portals as described in [first-time setup](config-surface.md#first-time-setup). It needs no `bukkit.yml` entry and works with DwellerCore installed or not.
 
+## Optional: DwellerTools and the resource pack
+
+[DwellerTools](config-tools.md) adds the Grappling Hook. Copy its jar into `plugins/` like the others. It also loads at `STARTUP` and registers its own datapack (`dwellertools`, which makes light blocks climbable). Its textures come from the [resource pack](resource-pack.md), which DwellerCore sends to every player on join; nothing to set up except leaving `resource-pack` in `server.properties` empty. Players who decline the pack are kicked ([`resource-pack.required`](config-core.md#resource-pack)).
+
 ## Restart, never /reload
 
-All three plugins build or register datapacks during bootstrap, before worlds load. Config changes need a **full restart**. World-generation changes only affect **chunks generated after the restart**.
+All of these plugins build or register datapacks during bootstrap, before worlds load. Config changes need a **full restart**. World-generation changes only affect **chunks generated after the restart**.
 
 ## Check it worked
 
 | Command | Expected |
 |---|---|
-| `/datapack list enabled` | Shows `dwellercore`, `dwellerbiomes`, `dwellerstructures` |
+| `/datapack list enabled` | Shows `dwellercore`, `dwellerbiomes`, `dwellerstructures` (and `dwellertools` if installed) |
 | `/tp @s ~ -2000 ~` | Works (no "out of the world" error) |
 | `/locate biome dwellerbiomes:sandstone_caves` | Finds a location |
 | `/locate structure minecraft:ancient_city` | Finds a location |

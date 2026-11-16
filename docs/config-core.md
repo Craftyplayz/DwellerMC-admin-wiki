@@ -126,6 +126,22 @@ With `random-cave: true`, each attempt picks a random column within `radius` and
 
 Example: `"<gold>⛏ <white><depth></white> deep <dark_gray>|</dark_gray> Lv <level>"`. A malformed tag shows as plain text; it never errors. Other plugins that also use the action bar (for example a scoreboard plugin) will flicker against it; set `enabled: false` if one of them should win.
 
+## resource-pack
+
+Sends the server resource pack on join. Details, repo layout and the release flow: [Resource pack](resource-pack.md). Keep `resource-pack` in `server.properties` empty.
+
+| Key | Default | Unit | Effect |
+|---|---|---|---|
+| `resource-pack.enabled` | `true` | boolean | `false` sends no pack and never kicks. Custom items from [DwellerTools](config-tools.md) then show their base items unless you deliver the pack another way. |
+| `resource-pack.url` | `https://github.com/Craftyplayz/DwellerMC-resourcepack/releases/download/pack/DwellerMC.zip` | link | Download link of the pack zip. An empty link sends nothing. The pack id is made from this link, so a new link replaces the old pack on the client instead of stacking. |
+| `resource-pack.sha1-url` | `.../pack/DwellerMC.zip.sha1` | link | Text file holding the zip's SHA-1, downloaded once at startup (10 s connect, 15 s read timeout). A new pack release then only needs a restart. If it cannot be read (not a 40-character hex hash, HTTP error, no connection), the log warns and the pack is sent without a hash, so players may keep an old copy. Empty = no hash. |
+| `resource-pack.required` | `true` | boolean | `true`: declining the pack, a failed download or an invalid link kicks the player with `kick-message`. `false`: the pack is offered and can be skipped. |
+| `resource-pack.prompt` | `<gold>DwellerMC needs its resource pack for custom items.` | MiniMessage | Text on the pack screen. |
+| `resource-pack.kick-message` | red line plus a grey hint (set Server Resource Packs to Enabled in the server list) | MiniMessage | Shown to kicked players. `
+` is a line break. |
+
+If the pack host is down while `required` is `true`, nobody can join. Set `required: false` until it is back.
+
 ## ores (new chunks)
 
 | Key | Default | Range | Effect |

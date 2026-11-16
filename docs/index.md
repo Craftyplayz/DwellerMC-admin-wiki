@@ -2,7 +2,7 @@
 
 Admin-only reference for the DwellerMC server.
 
-Requires **Paper 26.3** and **Java 25**. The three plugins below load at `STARTUP` (`paper-plugin.yml`). A fourth plugin, [DwellerSurface](config-surface.md), adds the burning surface world.
+Requires **Paper 26.3** and **Java 25**. The three plugins below load at `STARTUP` (`paper-plugin.yml`). Two more plugins: [DwellerSurface](config-surface.md) adds the burning surface world, and [DwellerTools](config-tools.md) adds custom tools (the Grappling Hook). DwellerCore sends the [resource pack](resource-pack.md) they use.
 
 ## The three plugins
 
@@ -24,7 +24,7 @@ Requires **Paper 26.3** and **Java 25**. The three plugins below load at `STARTU
 All DwellerCore gameplay (mobs, spawn, HUD) only runs in worlds whose generator is DwellerCore's, plus mob levels in worlds listed in `mobs.fixed-level-worlds`.
 
 ## Repos (GitHub: Craftyplayz)
-Plugins (private): `DwellerCore`, `DwellerBiomes`, `DwellerStructures`. Build each with `./gradlew build`. Wikis (public): this one (unlisted) and the [player wiki](https://craftyplayz.github.io/DwellerMC-wiki/).
+Plugins (private): `DwellerCore`, `DwellerBiomes`, `DwellerStructures`, `DwellerSurface`, `DwellerTools`. Public: `DwellerMC-resourcepack`. Build each with `./gradlew build`. Wikis (public): this one (unlisted) and the [player wiki](https://craftyplayz.github.io/DwellerMC-wiki/).
 
 ## Other plugins
 Third-party and helper plugins on the server each have a page under **Plugins**: permissions and safety ([LuckPerms](plugins/luckperms.md), [CoreProtect](plugins/coreprotect.md), [WorldGuard](plugins/worldguard.md)), [EssentialsX](plugins/essentials.md), mining ([Veinminer](plugins/veinminer.md), [CraftyTools](plugins/craftytools.md)), gameplay and community plugins.

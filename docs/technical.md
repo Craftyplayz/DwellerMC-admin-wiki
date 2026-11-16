@@ -16,17 +16,22 @@ Stored on mob entities (namespace `dwellercore`, `Keys.java`):
 
 Elites are re-tracked from these keys when their chunk loads, so they keep their traits across restarts.
 
+Stored by DwellerTools (namespace `dwellertools`, `Keys.java`): see [DwellerTools config](config-tools.md#persistent-keys).
+
 ## Load order
-All three plugins are `load: STARTUP`. Each registers its datapack in the bootstrap phase, before worlds exist:
+DwellerCore, DwellerBiomes, DwellerStructures and DwellerTools are `load: STARTUP`. Each registers its datapack in the bootstrap phase, before worlds exist:
 
 - DwellerCore's pack failing to register throws, so the server never generates a world at vanilla height.
 - DwellerBiomes' pack failing throws for the same reason (the biomes wouldn't exist).
 - DwellerStructures' pack failing only logs an error; structures stay vanilla.
+- DwellerTools' datapack only adds `minecraft:light` to `#minecraft:climbable`. Without it ropes exist but cannot be climbed.
 
 ## Performance notes (from the code)
 - Cave density is sampled on a 4×8×4 grid and interpolated, like vanilla, over a ~2000-block column.
 - `caves.biome-boost` adds a biome lookup per grid point; it's skipped while the map is empty.
 - The spawn search scans at most 8 columns (one chunk load each) before carving a room.
 - Name tags update every 10 ticks for mobs within 24 blocks of a player. Elite abilities and boss bars tick every 20 ticks.
+- DwellerCore downloads the resource pack's SHA-1 once at startup, off the main thread. See [Resource pack](resource-pack.md).
+- DwellerTools checks ropes every `rope.check-ticks` (5) ticks and only loops over ropes that exist.
 
 See also: [DwellerCore config](config-core.md), [Troubleshooting](troubleshooting.md).
