@@ -1,6 +1,6 @@
 # Resource pack
 
-The server has one required resource pack. It holds the textures and item models for custom items (the [Grappling Hook](config-tools.md) and its rope, and the Drill, Hammer and Paxel). It lives in its own public repo, `DwellerMC-resourcepack` (GitHub: Craftyplayz), and [DwellerCore](config-core.md#resource-pack) sends it to every player on join.
+The server has one required resource pack. It holds the textures and item models for custom items (the [Grappling Hook](config-tools.md) and its rope, and the Drill, Hammer and Paxel) and one sound change: the totem sound is muted so [DwellerEnchants](config-enchants.md) can play its attune animation silently. It lives in its own public repo, `DwellerMC-resourcepack` (GitHub: Craftyplayz), and [DwellerCore](config-core.md#resource-pack) sends it to every player on join.
 
 ## Fixed links
 
@@ -29,6 +29,7 @@ Keep `resource-pack` in `server.properties` **empty**. DwellerCore replaces it, 
 | `assets/dwellermc/items/` | Item model definitions (`grappling_hook.json`, `rope.json`, `drill.json`, `hammer.json`, `paxel.json`). The names are the model ids used in config: `dwellermc:grappling_hook` is `item.model` and `dwellermc:rope` is `rope.model` in [DwellerTools](config-tools.md), and `dwellermc:drill`, `dwellermc:hammer` and `dwellermc:paxel` are the `item.model` of the mining tools. Each tool's texture is `assets/dwellermc/textures/item/<id>.png` and `art/<id>/gen.py` draws it. |
 | `assets/dwellermc/models/` | The models the item definitions point to. |
 | `assets/dwellermc/textures/` | Textures (PNG). |
+| `assets/minecraft/sounds.json` | [DwellerEnchants](config-enchants.md): mutes `item.totem.use`, so the attune animation (a totem animation) is silent. Real totems are silent too. |
 | `art/` | Scripts that draw the textures (`py gen.py` in each folder). Not part of the zip: copy a result into `assets/`. |
 | `.github/workflows/release.yml` | Builds and uploads the zip. |
 
@@ -68,5 +69,6 @@ To rebuild without a change, run the workflow manually (the Actions tab, "Releas
 
 - [DwellerCore resource pack keys](config-core.md#resource-pack)
 - [DwellerTools config](config-tools.md)
+- [DwellerEnchants config](config-enchants.md)
 - [Minecraft resource pack format on the wiki](https://minecraft.wiki/w/Resource_pack)
 - [GitHub Actions documentation](https://docs.github.com/en/actions)

@@ -189,8 +189,9 @@ Applies to hostile mobs (`Enemy`) in DwellerCore worlds and in worlds listed in 
 | `mobs.max-toughness` | `6` | 0 to 20 | `+6 x p` armor toughness. |
 | `mobs.max-knockback-resistance` | `0.5` | 0 to 1 | `+0.5 x p` knockback resistance (1 = immune). |
 | `mobs.follow-range-min` / `-max` | `16` / `48` | 0 to 2048 | Follow range = max(vanilla, `16 + 32 x p`). |
-| `mobs.max-zombie-reinforcements` | `0.5` | 0 to 1 | Zombie reinforcement chance `+0.5 x p`. |
+| `mobs.max-zombie-reinforcements` | `0.5` | 0 to 1 | Zombie reinforcement chance `+0.5 x p`. The bonus is off while the zombie is silenced (vanilla's own chance stays). |
 | `mobs.piglins-immune-to-zombification` | `true` | true/false | Piglins and brutes never turn into zombified piglins. `false` = vanilla (they convert after 15 s in the overworld). |
+| `mobs.silence-respected` | `true` | true/false | `true`: a mob hit by [DwellerEnchants](config-enchants.md)' Silence loses every DwellerCore ability for the Silence duration: elite traits (active, passive and Explosive death), status hits, archer aim and double shot, strong witch potions, extra slime splits, spider leaps, enderman teleports and the zombie reinforcement bonus. Stats, gear, name tag, elite particles and boss bar stay. `false` = Silence does nothing. No effect without DwellerEnchants. |
 | `mobs.level-spawner-mobs` | `false` | true/false | `false`: mobs from spawners (`SpawnReason.SPAWNER`: dungeons and placed spawners) stay vanilla and never become elites. Trial spawners are always leveled. |
 | `mobs.fixed-level-worlds` | `world_surface: 50` | level 1 to max-level | World name to a fixed area level, for worlds DwellerCore did not generate. |
 | `mobs.no-scale` | `[WARDEN, WITHER, ENDER_DRAGON, ELDER_GUARDIAN]` | mob ids | Never leveled, never swapped by spawn mix. Case doesn't matter. |
@@ -239,9 +240,11 @@ The color applies to the whole tag unless `name-format` sets its own colors. `na
 | `mobs.status-hit-min-ticks` / `max-ticks` | `60` / `120` | 1 to 72000; max not below min | Effect length, random between these (3 to 6 s). A `max-ticks` below `min-ticks` falls back to 120. |
 | `mobs.status-hit-level-2-from` | `35` | 1 to 1001 | Mobs of this level and up give level II. |
 
-Adding `wither` or `blindness` to the list is a big difficulty jump in dark caves. Ranged hits count too: the effect comes from the shooter.
+Adding `wither` or `blindness` to the list is a big difficulty jump in dark caves. Ranged hits count too: the effect comes from the shooter. Status hits are skipped while the mob is silenced ([`mobs.silence-respected`](#levels-and-stats)).
 
 ### Abilities
+
+Spider leaps, enderman teleports, archer aim and double shots are skipped while the mob is silenced ([`mobs.silence-respected`](#levels-and-stats)).
 
 | Key | Default | Range | Effect |
 |---|---|---|---|
@@ -300,6 +303,7 @@ Only for kills by players.
 | `mobs.rewards.extra-loot-max-rolls` | `2` | 0 to 64 | Each drop stack gets `2 x p` extra copies (fraction rounded randomly). Not for elites. |
 | `mobs.rewards.rare-drop-max-chance` | `0.03` | 0 to 1 | Chance `0.03 x p` of one pick from `rare-drops`. Not for elites (they get `elites.rare-drops` picks). |
 | `mobs.rewards.rare-drops` | see below | rows | The rare-drop table. |
+| `mobs.rewards.book-excluded-enchantments` | `[mending]` | enchantment ids | Never put on the random `enchanted_book` rare drops. `[]` = none excluded. An id that is not a valid enchantment id logs a warning and is skipped. |
 
 Default `rare-drops` (weights add up to 100, so weight = percent):
 
@@ -307,10 +311,12 @@ Default `rare-drops` (weights add up to 100, so weight = percent):
 |---|---|---|
 | diamond | 30 | 1 to 2 |
 | emerald | 30 | 2 to 4 |
-| enchanted_book | 25 | 1 (one random enchantment at a random level, any enchantment in the game) |
+| enchanted_book | 25 | 1 (one random enchantment at a random level, from `#minecraft:on_random_loot` minus `mobs.rewards.book-excluded-enchantments`) |
 | golden_apple | 12 | 1 |
 | enchanted_golden_apple | 2 | 1 |
 | totem_of_undying | 1 | 1 |
+
+The `enchanted_book` roll picks from the vanilla tag `#minecraft:on_random_loot`, the enchantments chest loot can roll. Curses and Frost Walker can still roll; Swift Sneak, Soul Speed, Wind Burst, Mending and every [DwellerEnchants](config-enchants.md) enchantment never do.
 
 Each row is `{ item, weight, min, max }`; `weight` 0 to 1000000, `min` and `max` 1 to 64; `min` defaults to 1 and `max` to `min`. Weights are relative: `{ diamond: 1, emerald: 3 }` gives 25% and 75%. A row with an unknown item or `max` below `min` is skipped with a warning. These numbers are also written out on the player wiki [kill rewards](https://craftyplayz.github.io/DwellerMC-wiki/mobs/rewards/) page.
 
@@ -350,9 +356,9 @@ Every trait has `enabled` (false = never picked for new elites) and `name` (the 
 | Trait | name | Settings (default, range) | Effect |
 |---|---|---|---|
 | `vampiric` | Vampiric | `heal-fraction` 0.3 (0 to 10) | Heals 30% of the damage it deals. |
-| `thorns` | Thorny | `reflect-fraction` 0.2 (0 to 10) | A player hitting it takes 20% of the damage back (from arrows too, to the shooter). |
+| `thorns` | Thorny | `reflect-fraction` 0.2 (0 to 10) | A player hitting it takes 20% of the damage back (from arrows too, to the shooter). It reflects the damage from before DwellerEnchants' bonuses (DwellerCore handles the hit at `HIGH`, DwellerEnchants adds its bonuses at `HIGHEST`). |
 | `berserker` | Berserk | `max-damage-multiplier` 2 (1 to 100) | Damage x1 at full health, rising linearly to x2 at 0 health. |
-| `shielded` | Shielded | `hits` 3 (0 to 1000) | The first 3 hits are blocked completely, with a shield sound. |
+| `shielded` | Shielded | `hits` 3 (0 to 1000), `pierced-by` `["dwellerenchants:elite_bane", "dwellerenchants:executioner"]` | The first 3 hits are blocked completely, with a shield sound. A player whose main-hand weapon has an enchantment listed in `pierced-by` hits through the shield (also with arrows and tridents they shot) and uses no charge. Ids of enchantments that don't exist are skipped silently (the defaults come from [DwellerEnchants](config-enchants.md)); a malformed id logs a warning. `[]` = nothing pierces. |
 | `blink` | Blinking | `every-seconds` 8, `range` 16 (1 to 128), `distance-behind` 2 (0 to 16) | Teleports behind its target when within range. |
 | `leaper` | Leaping | `every-seconds` 4, `min-distance` 4, `max-distance` 12 (0 to 64), `lift` 0.5 (0 to 5) | Jumps at its target. |
 | `webber` | Webbing | `every-seconds` 10, `web-ticks` 100 (1 to 72000) | Puts a cobweb at the target's feet (only in air), removed after 5 s. |
@@ -361,6 +367,8 @@ Every trait has `enabled` (false = never picked for new elites) and `name` (the 
 | `frost_aura` | Frostbound | `every-seconds` 1, `radius` 6 (0 to 64), `slowness-ticks` 40 (1 to 72000), `slowness-amplifier` 0 (0 to 9) | Slowness I on nearby players. |
 | `darkness_pulse` | Shrouded | `every-seconds` 10, `radius` 10 (0 to 64), `darkness-ticks` 60 (1 to 72000) | Darkness on nearby players. |
 | `explosive_death` | Explosive | `power` 3 (0 to 20), `fire` false, `break-blocks` false | Explodes on death (power 3 = creeper, 4 = TNT). |
+
+Every trait, Explosive death included, is off while the mob is silenced ([`mobs.silence-respected`](#levels-and-stats)). Silence comes from [DwellerEnchants](config-enchants.md).
 
 **burrower.** Never breaks unbreakable blocks (bedrock, so it can't dig through the roof), liquids or blocks with contents (chests, spawners, any tile entity). Blocks harder than `max-hardness` are skipped: stone is 1.5, deepslate 3, obsidian 50, so the default digs through everything except bedrock-like blocks. Set `2` to keep burrowers out of deepslate. It breaks player builds outside protected areas; [WorldGuard](plugins/worldguard.md) regions don't stop it, because the block change is not a player action.
 
@@ -372,4 +380,4 @@ Every trait has `enabled` (false = never picked for new elites) and `name` (the 
 
 The player wiki [elite mobs](https://craftyplayz.github.io/DwellerMC-wiki/mobs/elites/) page describes every trait with these numbers.
 
-See also: [Technical notes](technical.md), [Troubleshooting](troubleshooting.md), [DwellerBiomes config](config-biomes.md), [DwellerStructures config](config-structures.md), [DwellerSurface config](config-surface.md).
+See also: [Technical notes](technical.md), [Troubleshooting](troubleshooting.md), [DwellerBiomes config](config-biomes.md), [DwellerStructures config](config-structures.md), [DwellerSurface config](config-surface.md), [DwellerEnchants config](config-enchants.md).

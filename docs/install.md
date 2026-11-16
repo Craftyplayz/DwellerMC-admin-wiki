@@ -10,6 +10,7 @@
     - `DwellerBiomes-<version>.jar`
     - `DwellerStructures-<version>.jar`
     - `DwellerTools-<version>.jar` (optional, see below)
+    - `DwellerEnchants-<version>.jar` (optional, see below)
 2. Copy the jars into the server's `plugins/` folder.
 3. In `bukkit.yml`, set the generator (use your level name if it isn't `world`):
     ```yaml
@@ -29,6 +30,10 @@
 
 [DwellerTools](config-tools.md) adds the Grappling Hook, Drill, Hammer and Paxel. Copy its jar into `plugins/` like the others. It also loads at `STARTUP` and registers its own datapack (`dwellertools`, which makes light blocks climbable). Its textures come from the [resource pack](resource-pack.md), which DwellerCore sends to every player on join; nothing to set up except leaving `resource-pack` in `server.properties` empty. Players who decline the pack are kicked ([`resource-pack.required`](config-core.md#resource-pack)).
 
+## Optional: DwellerEnchants
+
+[DwellerEnchants](config-enchants.md) adds 27 enchantments that come from mob-dropped books. It **requires DwellerCore** and loads at `STARTUP` after it. Copy its jar into `plugins/` and restart. It writes its datapack (`dwellerenchants`) to `plugins/DwellerEnchants/datapack/` at every startup. The [resource pack](resource-pack.md) mutes the totem sound for its attune animation.
+
 ## Restart, never /reload
 
 All of these plugins build or register datapacks during bootstrap, before worlds load. Config changes need a **full restart**. World-generation changes only affect **chunks generated after the restart**.
@@ -37,7 +42,7 @@ All of these plugins build or register datapacks during bootstrap, before worlds
 
 | Command | Expected |
 |---|---|
-| `/datapack list enabled` | Shows `dwellercore`, `dwellerbiomes`, `dwellerstructures` (and `dwellertools` if installed) |
+| `/datapack list enabled` | Shows `dwellercore`, `dwellerbiomes`, `dwellerstructures` (and `dwellertools` and `dwellerenchants` if installed) |
 | `/tp @s ~ -2000 ~` | Works (no "out of the world" error) |
 | `/locate biome dwellerbiomes:sandstone_caves` | Finds a location |
 | `/locate structure minecraft:ancient_city` | Finds a location |

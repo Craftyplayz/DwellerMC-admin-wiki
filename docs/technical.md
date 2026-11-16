@@ -18,12 +18,15 @@ Elites are re-tracked from these keys when their chunk loads, so they keep their
 
 Stored by DwellerTools (namespace `dwellertools`, `Keys.java`): see [DwellerTools config](config-tools.md#persistent-keys).
 
+Stored by DwellerEnchants (namespace `dwellerenchants`, `Keys.java`): see [DwellerEnchants config](config-enchants.md#persistent-keys). DwellerCore reads `dwellerenchants:silenced_until` from mobs, and DwellerEnchants reads DwellerCore's level and elite keys above.
+
 ## Load order
-DwellerCore, DwellerBiomes, DwellerStructures and DwellerTools are `load: STARTUP`. Each registers its datapack in the bootstrap phase, before worlds exist:
+DwellerCore, DwellerBiomes, DwellerStructures, DwellerTools and DwellerEnchants are `load: STARTUP` (DwellerEnchants after DwellerCore, which it requires). Each registers its datapack in the bootstrap phase, before worlds exist:
 
 - DwellerCore's pack failing to register throws, so the server never generates a world at vanilla height.
 - DwellerBiomes' pack failing throws for the same reason (the biomes wouldn't exist).
 - DwellerStructures' pack failing only logs an error; structures stay vanilla.
+- DwellerEnchants' pack failing throws, because every enchanted item would break. It is written from `config.yml` into `plugins/DwellerEnchants/datapack/` at each startup.
 - DwellerTools' datapack only adds `minecraft:light` to `#minecraft:climbable`. Without it ropes exist but cannot be climbed.
 
 ## Performance notes (from the code)

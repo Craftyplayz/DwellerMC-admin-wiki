@@ -44,6 +44,7 @@ nav:
       - DwellerStructures: config-structures.md
       - DwellerSurface: config-surface.md
       - DwellerTools: config-tools.md
+      - DwellerEnchants: config-enchants.md
   - Resource pack: resource-pack.md
   - Plugins:
       - Permissions & safety:
