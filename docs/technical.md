@@ -29,6 +29,13 @@ DwellerCore, DwellerBiomes, DwellerStructures, DwellerTools and DwellerEnchants 
 - DwellerEnchants' pack failing throws, because every enchanted item would break. It is written from `config.yml` into `plugins/DwellerEnchants/datapack/` at each startup.
 - DwellerTools' datapack only adds `minecraft:light` to `#minecraft:climbable`. Players climb ropes because the plugin sets their speed every tick (some clients never get the datapack tag); the tag is what lets mobs climb them.
 
+## Datapack overrides
+DwellerCore's datapack replaces three kinds of vanilla worldgen files. All of them only affect chunks generated after the change.
+
+- `worldgen/noise_settings/overworld.json`: vanilla overworld noise settings with noise `min_y` -2032 and `height` 2048 (vanilla -64 and 384). Minecraft places mineshafts and strongholds at a random height from the noise min_y up to sea level minus 10 (Y 53). With the vanilla -64 every mineshaft landed between Y -64 and the roof and most were cancelled by the roof rule; now they spread over the whole depth.
+- `worldgen/placed_feature/monster_room*.json`: dungeons, see [DwellerCore config](config-core.md#dungeons-datapack).
+- `worldgen/placed_feature/spring_water.json`, `spring_lava.json`, `lake_lava_underground.json`: cave water and lava, see [DwellerCore config](config-core.md#cave-water-and-lava-datapack).
+
 ## Performance notes (from the code)
 - Cave density is sampled on a 4×8×4 grid and interpolated, like vanilla, over a ~2000-block column.
 - `caves.biome-boost` adds a biome lookup per grid point; it's skipped while the map is empty.

@@ -83,9 +83,9 @@ Ores pick their stone or deepslate variant from the rock they replace, so `deeps
 
 | Key | Default | Used in | Effect |
 |---|---|---|---|
-| `structures.height-limits` | stronghold `[-2032, -500]`, mineshaft and mineshaft_mesa `[-1000, -17]` | `StructureFilter.java` | Structure id to `[min, max]`. The whole bounding box must fit inside, or the structure is cancelled when it generates. |
+| `structures.height-limits` | stronghold `[-2032, -500]`, mineshaft and mineshaft_mesa `[-2032, -17]` | `StructureFilter.java` | Structure id to `[min, max]`. The whole bounding box must fit inside, or the structure is cancelled when it generates. |
 
-Any structure reaching Y -16 or higher is always cancelled, with or without a limit. Use limits for structures whose height Minecraft picks itself (strongholds, mineshafts); jigsaw structures get a fixed `y` in [DwellerStructures](config-structures.md) instead. Cancelled attempts are simply missing, so raise the set's frequency or lower its spacing to compensate. An entry that isn't `[min, max]` with min at or below max is skipped with a warning.
+Any structure reaching Y -16 or higher is always cancelled, with or without a limit. Minecraft picks mineshaft and stronghold heights uniformly from the noise min_y (Y -2032, see the [noise settings override](technical.md#datapack-overrides)) up to Y 53, so the default mineshaft limit drops only the top few percent and the stronghold limit also drops its upper quarter. Use limits for structures whose height Minecraft picks itself (strongholds, mineshafts); jigsaw structures get a fixed `y` in [DwellerStructures](config-structures.md) instead. Cancelled attempts are simply missing, so raise the set's frequency or lower its spacing to compensate. An entry that isn't `[min, max]` with min at or below max is skipped with a warning.
 
 ## Dungeons (datapack)
 
@@ -97,6 +97,16 @@ Not a config key: `src/main/resources/datapack/data/minecraft/worldgen/placed_fe
 - To change it: edit `POINTS` in `tools/dungeons.py`, run `py tools/dungeons.py`, rebuild, restart. New chunks only.
 
 Datapack files are read by the server before plugins load, which is why this one can't be a config key.
+
+## Cave water and lava (datapack)
+
+Not a config key: `src/main/resources/datapack/data/minecraft/worldgen/placed_feature/{spring_water,spring_lava,lake_lava_underground}.json`, written by `tools/fluids.py`.
+
+- `spring_water`: 196 attempts per chunk, uniform over Y -2025 to -17 (vanilla's density per block of height).
+- `spring_lava`: 107 attempts per chunk, weighted 3 times more common at the bottom than the top, in 100-block bands.
+- `lake_lava_underground`: 48 attempts per chunk. An attempt must start in cave air and drop up to 32 blocks to a cave floor. Half the lakes are water, half lava. Vanilla only places underground lava lakes above Y 0, which is this world's roof, so there were none before.
+- Applies to every biome that lists these vanilla features: all DwellerBiomes cave biomes and the vanilla cave biomes (the Deep Dark has none).
+- To change it: edit the numbers at the top of `tools/fluids.py`, run `py tools/fluids.py`, rebuild, restart. New chunks only.
 
 ## spawn
 

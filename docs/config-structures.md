@@ -32,10 +32,10 @@ Mineshafts, strongholds and trial chambers get every cave biome in `extra-biomes
 |---|---|---|---|
 | `ancient_city` | `[]` (vanilla tag: Deep Dark only) | `[-1950, -1450]` | `ancient_cities`: 24 / 8 / 1.0 |
 | `trial_chambers` | cave biomes | `[-1990, -640]` | `trial_chambers`: 34 / 12 / 1.0 |
-| `mineshaft` | cave biomes | Minecraft's own, limited to Y -1000..-17 by DwellerCore | `mineshafts`: 1 / 0 / 0.008 |
+| `mineshaft` | cave biomes | Minecraft's own, limited to Y -2032..-17 by DwellerCore | `mineshafts`: 1 / 0 / 0.03 |
 | `stronghold` | cave biomes | Minecraft's own, limited to below Y -500 by DwellerCore | `strongholds`: 64 / 32 / 1.0 (spread over the world, not rings) |
 
-Mineshaft and stronghold heights can't be set here: Minecraft places them at a random height below sea level. DwellerCore drops the ones outside its `structures.height-limits` (see [DwellerCore config](config-core.md#structures)), so their sets are tuned up to make up for the dropped ones. Mineshafts: about 45% of attempts land inside Y -1000..-17, so 0.008 gives roughly vanilla's 0.4% per chunk.
+Mineshaft and stronghold heights can't be set here: Minecraft places them at a random height below sea level. DwellerCore drops the ones outside its `structures.height-limits` (see [DwellerCore config](config-core.md#structures)), so their sets are tuned up to make up for the dropped ones. Mineshafts: DwellerCore spreads their height over the whole depth, so about 97% of attempts fit inside Y -2032..-17. 0.03 gives about 3% of chunks a mineshaft, spread over every depth. This default is only written when `structures.yml` is first created; an existing server must change `sets.mineshafts.frequency` itself.
 
 These defaults live in `DefaultConfig.java` only to write the first file. After that, `structures.yml` is the only place they are read from; change them there.
 
