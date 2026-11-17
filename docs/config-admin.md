@@ -82,9 +82,9 @@ MiniMessage text. An empty string turns that message off. Placeholders: `<time>`
 | `messages.restart-warning` | `<red>Server restarting in <yellow><time></yellow>.` | Chat line at every warning time. |
 | `messages.restart-title` | `<red>Restart in <time>` | Title shown with each warning. |
 | `messages.restart-cancelled` | `<green>The server restart was cancelled.` | Broadcast when an admin cancels a countdown. |
-| `messages.restart-kick` | `<yellow>The server is restarting. Please rejoin in a minute.` | Kick screen when the countdown reaches 0. |
+| `messages.restart-kick` | `<yellow>The server is restarting. Please rejoin in a minute.` | Kick screen when the countdown reaches 0. Empty: the plain line "The server is restarting." |
 | `messages.broadcast` | `<gold><bold>[Server]</bold> <white><message>` | Format of an admin broadcast. `<message>` is the admin's text, MiniMessage allowed. Empty means the Broadcast button sends nothing. |
-| `messages.maintenance-kick` | `<yellow>The server is under maintenance. Please try again later.` | Kick of online players, and the refusal screen at login. Empty: the kick of online players has no custom text and the login refusal uses a plain English line. |
+| `messages.maintenance-kick` | `<yellow>The server is under maintenance. Please try again later.` | Kick of online players, and the refusal screen at login. Empty: both use the plain line "The server is under maintenance." |
 
 ## The panel
 
