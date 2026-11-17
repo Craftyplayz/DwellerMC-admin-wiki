@@ -258,8 +258,11 @@ Namespace `dwellerenchants`. Never rename one: books and mobs already carry them
 | Log: unknown sound for `anvil.fail-sound` | Not a sound id | Use an id from `/playsound` completion, or `""`. |
 | Totem sound plays with the attune animation | The resource pack is not applied or is outdated | See [resource pack troubleshooting](resource-pack.md#troubleshooting). |
 
+The [DwellerAdmin](config-admin.md#items) panel lists every attuned book at every level (rolled at the top of its rarity's chance range) and one unattuned book per rarity, through `adminItems`. Disabled enchantments are left out.
+
 ## Links
 
+- [DwellerAdmin panel](config-admin.md)
 - [Paper documentation](https://docs.papermc.io/)
 - [Enchantment definition on the Minecraft Wiki](https://minecraft.wiki/w/Enchantment_definition)
 - [MiniMessage format](https://docs.advntr.dev/minimessage/format.html)

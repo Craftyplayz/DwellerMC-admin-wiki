@@ -239,8 +239,11 @@ Boxes and arrivals are plain strings, so a world that is not loaded never breaks
 | Surface is empty after renaming `world.name` | A new world was made | Change the name back, or set the portals again in the new world. |
 | Changed `layers` or `biome`, nothing changed | Existing chunks keep their generation | Stop the server, delete the surface world folder, start again. Everything built there is lost. |
 
+The [DwellerAdmin](config-admin.md) panel uses three hooks on DwellerSurface: `adminItems` (suit pieces and the daily item), `adminPortal` (teleport to the underground portal) and `adminResetSuit` (sets the damage of a player's suit pieces to 0; each piece keeps the wear time it was made with).
+
 ## Links
 
+- [DwellerAdmin panel](config-admin.md)
 - [DwellerCore mob settings](config-core.md#mobs)
 - [Install](install.md)
 - [Troubleshooting](troubleshooting.md)

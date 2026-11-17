@@ -308,6 +308,7 @@ Only players who have non-default data are stored. A normal player with no extra
 - **WorldEdit:** WorldEdit on Bukkit reads permissions through the normal Bukkit permission check, so LuckPerms nodes work. `wepif.yml` in the server root is only used for old standalone setups.
 - **spark, WorldGuard, CoreProtect, InvSee++:** see their pages. InvSee++ soft-depends on LuckPerms and can use it to look up offline player UUIDs (strategy `permission plugin`).
 - **DwellerCore, DwellerBiomes, DwellerStructures:** no commands or permissions, nothing to set up.
+- **[DwellerAdmin](../config-admin.md):** `dwelleradmin.use` (default `op`) opens `/admin`. Give it only to staff. It does not get a player in during maintenance, only op does.
 
 ## Recommended for this server
 

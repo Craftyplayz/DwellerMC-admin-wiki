@@ -342,6 +342,8 @@ Each row is `{ item, weight, min, max }`; `weight` 0 to 1000000, `min` and `max`
 
 Only `NATURAL` spawns in DwellerCore worlds are swapped; the replacement spawns as `CUSTOM` and then gets leveled normally. A pool needs at least one weight above 0, otherwise the default pool is used. Unknown or non-spawnable ids are skipped with a warning. A warden weight above 1 fills the deepest part of the world with wardens, which most players can only run from. Non-hostile mobs in a pool (for example `cow`) spawn but are not leveled. The player wiki [tougher spawns](https://craftyplayz.github.io/DwellerMC-wiki/mobs/spawn-mix/) page shows both pools.
 
+The [DwellerAdmin](config-admin.md#mobs-page) panel spawns mobs through `adminSpawn` (exact level, no spread, any world, elite chosen by the admin; mobs in `no-scale` and non-hostile mobs get no level) and shows depth, level, elite chance and ore multiplier through `adminInfo`.
+
 ## elites
 
 | Key | Default | Range | Effect |

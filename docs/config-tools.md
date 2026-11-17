@@ -239,8 +239,11 @@ Never rename or remove these. Existing items, entities and chunks carry them.
 | Drill Efficiency is not at the configured level | It was made with an older `efficiency-level` | Put it through an anvil or grindstone, or craft a new one. |
 | Invisible blocks stay after a crash | The chunk has not been loaded since | They are removed the next time it loads. |
 
+The [DwellerAdmin](config-admin.md#items) panel lists the Grappling Hook, Drill, Hammer and Paxel through `adminItems`. A tool with `enabled: false` is not listed.
+
 ## Links
 
+- [DwellerAdmin panel](config-admin.md)
 - [DwellerCore resource pack keys](config-core.md#resource-pack)
 - [Resource pack](resource-pack.md)
 - [Install](install.md)

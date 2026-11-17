@@ -11,6 +11,7 @@
     - `DwellerStructures-<version>.jar`
     - `DwellerTools-<version>.jar` (optional, see below)
     - `DwellerEnchants-<version>.jar` (optional, see below)
+    - `DwellerAdmin-<version>.jar` (optional, see below)
 2. Copy the jars into the server's `plugins/` folder.
 3. In `bukkit.yml`, set the generator (use your level name if it isn't `world`):
     ```yaml
@@ -29,6 +30,10 @@
 ## Optional: DwellerTools and the resource pack
 
 [DwellerTools](config-tools.md) adds the Grappling Hook, Drill, Hammer and Paxel. Copy its jar into `plugins/` like the others. It also loads at `STARTUP` and registers its own datapack (`dwellertools`, which makes light blocks climbable). Its item models come from the [resource pack](resource-pack.md), which DwellerCore sends to every player on join; nothing to set up except leaving `resource-pack` in `server.properties` empty. Players who decline the pack are kicked ([`resource-pack.required`](config-core.md#resource-pack)).
+
+## Optional: DwellerAdmin
+
+[DwellerAdmin](config-admin.md) is the `/admin` panel (items, teleports, mobs, players, restart countdown). It loads normally, registers no datapack and works with whichever of the other plugins are installed. Copy its jar into `plugins/` and restart. Ops can use it at once.
 
 ## Optional: DwellerEnchants
 
