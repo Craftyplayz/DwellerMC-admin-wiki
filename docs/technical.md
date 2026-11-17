@@ -27,7 +27,7 @@ DwellerCore, DwellerBiomes, DwellerStructures, DwellerTools and DwellerEnchants 
 - DwellerBiomes' pack failing throws for the same reason (the biomes wouldn't exist).
 - DwellerStructures' pack failing only logs an error; structures stay vanilla.
 - DwellerEnchants' pack failing throws, because every enchanted item would break. It is written from `config.yml` into `plugins/DwellerEnchants/datapack/` at each startup.
-- DwellerTools' datapack only adds `minecraft:light` to `#minecraft:climbable`. Without it ropes exist but cannot be climbed.
+- DwellerTools' datapack only adds `minecraft:light` to `#minecraft:climbable`. Players climb ropes because the plugin sets their speed every tick (some clients never get the datapack tag); the tag is what lets mobs climb them.
 
 ## Performance notes (from the code)
 - Cave density is sampled on a 4×8×4 grid and interpolated, like vanilla, over a ~2000-block column.

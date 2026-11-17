@@ -15,5 +15,5 @@
 | Log: `[DwellerCore] Config <key>: got ..., expected ... Using the default` | A DwellerCore value has the wrong type or is out of range; the server runs on the default | Fix the key; the ranges are in the [DwellerCore config](config-core.md) tables. Restart. |
 | Surface mobs have no level, or no suit pieces drop | World name differs from `mobs.fixed-level-worlds`, or DwellerCore is missing | See [DwellerSurface problems](config-surface.md#common-problems). |
 | Players are kicked on join about the resource pack | They declined it, or the download failed | They set Server Resource Packs to Enabled in the server list (Edit). See [Resource pack](resource-pack.md#troubleshooting). |
-| Grappling Hook ropes are there but not climbable | The `dwellertools` datapack is not loaded | Full restart. See [DwellerTools](config-tools.md#common-problems). |
+| Grappling Hook ropes are there but not climbable | Players press forward instead of jump, or DwellerTools is an old build that relied on the climbable tag alone (some clients never get it) | Hold jump inside the rope. Update DwellerTools and restart. See [DwellerTools](config-tools.md#common-problems). |
 | A config change did nothing | Old chunks keep their old generation; mobs keep spawn-time stats | Explore new chunks or start a fresh world. |
