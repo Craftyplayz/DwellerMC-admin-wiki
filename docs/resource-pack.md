@@ -1,6 +1,6 @@
 # Resource pack
 
-The server has one required resource pack. It holds the textures and item models for custom items (the [Grappling Hook](config-tools.md) and its rope, and the Drill, Hammer and Paxel) and one sound change: the totem sound is muted so [DwellerEnchants](config-enchants.md) can play its attune animation silently. It lives in its own public repo, `DwellerMC-resourcepack` (GitHub: Craftyplayz), and [DwellerCore](config-core.md#resource-pack) sends it to every player on join.
+The server has one required resource pack. It holds the item models for custom items (the [Grappling Hook](config-tools.md) and its rope, and the Drill, Hammer and Paxel) and one sound change: the totem sound is muted so [DwellerEnchants](config-enchants.md) can play its attune animation silently. It lives in its own public repo, `DwellerMC-resourcepack` (GitHub: Craftyplayz), and [DwellerCore](config-core.md#resource-pack) sends it to every player on join.
 
 ## Fixed links
 
@@ -26,18 +26,16 @@ Keep `resource-pack` in `server.properties` **empty**. DwellerCore replaces it, 
 | Path | What it is |
 |---|---|
 | `pack.mcmeta`, `pack.png` | Pack metadata (pack format 97 for Minecraft 26.3, `min_format` and `max_format`) and icon. |
-| `assets/dwellermc/items/` | Item model definitions (`grappling_hook.json`, `rope.json`, `drill.json`, `hammer.json`, `paxel.json`). The names are the model ids used in config: `dwellermc:grappling_hook` is `item.model` and `dwellermc:rope` is `rope.model` in [DwellerTools](config-tools.md), and `dwellermc:drill`, `dwellermc:hammer` and `dwellermc:paxel` are the `item.model` of the mining tools. Each tool's texture is `assets/dwellermc/textures/item/<id>.png` and `art/<id>/gen.py` draws it. |
-| `assets/dwellermc/models/` | The models the item definitions point to. |
-| `assets/dwellermc/textures/` | Textures (PNG). |
+| `assets/dwellermc/items/` | Item model definitions (`grappling_hook.json`, `rope.json`, `drill.json`, `hammer.json`, `paxel.json`). The names are the model ids used in config: `dwellermc:grappling_hook` is `item.model` and `dwellermc:rope` is `rope.model` in [DwellerTools](config-tools.md), and `dwellermc:drill`, `dwellermc:hammer` and `dwellermc:paxel` are the `item.model` of the mining tools. The json files currently point at vanilla models: `grappling_hook` at `minecraft:item/tripwire_hook`, `drill` and `hammer` at `minecraft:item/netherite_pickaxe`, `paxel` at `minecraft:item/netherite_axe` and `rope` at `minecraft:block/chain`. The pack has no custom textures at the moment. |
+| `assets/dwellermc/models/`, `assets/dwellermc/textures/` | Not present now. Create them when you add custom art (see below). |
 | `assets/minecraft/sounds.json` | [DwellerEnchants](config-enchants.md): mutes `item.totem.use`, so the attune animation (a totem animation) is silent. Real totems are silent too. |
-| `art/` | Scripts that draw the textures (`py gen.py` in each folder). Not part of the zip: copy a result into `assets/`. |
 | `.github/workflows/release.yml` | Builds and uploads the zip. |
 
 ## Adding a texture or model
 
 1. Put the texture in `assets/dwellermc/textures/item/` (or `block/`).
 2. Add a model in `assets/dwellermc/models/item/` that points at it.
-3. Add an item definition in `assets/dwellermc/items/<name>.json`. Its file name is the model id (`dwellermc:<name>`).
+3. Add or edit the item definition `assets/dwellermc/items/<name>.json`. Its file name is the model id (`dwellermc:<name>`). To replace a vanilla placeholder, change the `model` in the existing json from the vanilla path to your new model (for example `dwellermc:item/<name>`).
 4. Point the plugin config at that id (for example `grappling-hook.item.model`). A config change needs a plugin restart as well.
 5. Commit and push to `main`. When the Action is green, restart the server.
 
@@ -61,7 +59,7 @@ To rebuild without a change, run the workflow manually (the Actions tab, "Releas
 | Everybody is kicked | The pack URL is wrong, or the release is private or gone | Fix `resource-pack.url` or restore the `pack` release. Set `required: false` meanwhile. |
 | Log: `Resource pack: ... returned HTTP 404 without a SHA-1` | The release or the `.sha1` file does not exist yet | Run the workflow. The pack is sent without a hash until then. |
 | Updated pack not showing | Server not restarted, or the hash could not be read | Restart and check the log for `Resource pack SHA-1: ...`. |
-| Items show as carrot on a stick or string | The pack was not applied, or the model id in the config does not exist in the pack | Check the ids against `assets/dwellermc/items/`. |
+| Items show as carrot on a stick, string or plain netherite tools | The pack was not applied, or the model id in the config does not exist in the pack | Check the ids against `assets/dwellermc/items/`. |
 | Two packs download | `resource-pack` is set in `server.properties` | Empty it. |
 | No pack is sent | `resource-pack.enabled` is `false` or `url` is empty | Check [the keys](config-core.md#resource-pack). |
 

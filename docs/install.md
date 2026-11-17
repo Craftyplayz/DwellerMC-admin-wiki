@@ -28,7 +28,7 @@
 
 ## Optional: DwellerTools and the resource pack
 
-[DwellerTools](config-tools.md) adds the Grappling Hook, Drill, Hammer and Paxel. Copy its jar into `plugins/` like the others. It also loads at `STARTUP` and registers its own datapack (`dwellertools`, which makes light blocks climbable). Its textures come from the [resource pack](resource-pack.md), which DwellerCore sends to every player on join; nothing to set up except leaving `resource-pack` in `server.properties` empty. Players who decline the pack are kicked ([`resource-pack.required`](config-core.md#resource-pack)).
+[DwellerTools](config-tools.md) adds the Grappling Hook, Drill, Hammer and Paxel. Copy its jar into `plugins/` like the others. It also loads at `STARTUP` and registers its own datapack (`dwellertools`, which makes light blocks climbable). Its item models come from the [resource pack](resource-pack.md), which DwellerCore sends to every player on join; nothing to set up except leaving `resource-pack` in `server.properties` empty. Players who decline the pack are kicked ([`resource-pack.required`](config-core.md#resource-pack)).
 
 ## Optional: DwellerEnchants
 

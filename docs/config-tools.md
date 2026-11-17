@@ -10,7 +10,7 @@ File: `plugins/DwellerTools/config.yml` (default: `DwellerTools/src/main/resourc
 
 DwellerTools holds custom tools: the Grappling Hook, and the [Drill, Hammer and Paxel](#drill-hammer-and-paxel) mining tools. The first is the **Grappling Hook**: right-click throws a hook at a block and a climbable rope drops from it, sneak + right-click rappels down from an edge. Players climb the ropes like ladders: hold jump to go up, sneak to hang, let go to slide down. Ropes are temporary and removed by the plugin.
 
-How a rope is built: one `minecraft:light` block (level 0, invisible and not solid) per rope block, made climbable by the plugin's own datapack (it adds `minecraft:light` to `#minecraft:climbable`), plus one `item_display` per block that shows the rope texture, and one `item_display` for the hook at the top. Ropes only ever replace air.
+How a rope is built: one `minecraft:light` block (level 0, invisible and not solid) per rope block, made climbable by the plugin's own datapack (it adds `minecraft:light` to `#minecraft:climbable`), plus one `item_display` per block that shows the rope model, and one `item_display` for the hook at the top. Ropes only ever replace air.
 
 ## Install
 
@@ -36,7 +36,7 @@ How a rope is built: one `minecraft:light` block (level 0, invisible and not sol
 | `item.name` | `<white>Grappling Hook` | MiniMessage | Item name. Only applies to hooks made afterwards. |
 | `item.lore` | two grey lines | list of MiniMessage | Lore lines. Only applies to hooks made afterwards. |
 | `item.base-item` | `carrot_on_a_stick` | item id | Vanilla item the hook is built on. It should do nothing on right-click and must not be a crafting ingredient or fuel. Existing hooks keep their old base. An unknown id logs a warning and the default is used. |
-| `item.model` | `dwellermc:grappling_hook` | model id | Item model from the [resource pack](resource-pack.md) (`assets/dwellermc/items/grappling_hook.json`). A model the pack does not have shows the base item. |
+| `item.model` | `dwellermc:grappling_hook` | model id | Item model from the [resource pack](resource-pack.md) (`assets/dwellermc/items/grappling_hook.json`). A model the pack does not have shows the base item. With the pack it currently looks like a tripwire hook (the item json points at `minecraft:item/tripwire_hook`). |
 | `item.durability` | `64` | uses, 1 to 100000 | Uses before it breaks. Existing hooks keep their old maximum. |
 | `item.durability-per-use` | `1` | durability, 0 to 100000 | Lost per successful grapple or rappel. `0` = never wears. Failed throws cost nothing. Unbreaking can save the use, as on vanilla tools. |
 | `item.repair-material` | `iron_ingot` | item id | Anvil repair material, 25% per item, like iron tools. Existing hooks keep their old material. |
@@ -92,7 +92,7 @@ A rappel needs solid ground under the player, an air block in front of their fee
 | `rope.hold-at-end` | `true` | boolean | A rope that ends in mid-air or above lava holds the player at its last block instead of letting them slide off. Sneak and jump together to let go (for one second). `false` = they slide off the end. A rope that ends on solid ground never holds. |
 | `rope.climb-speed` | `4` | blocks per second, 0.5 to 20 | Speed a player inside a rope goes up while holding jump without sneak, also from the ground. `4` is vanilla ladder speed. The plugin sets the player's speed every tick, so this works on every client. Flying players and players who just let go (sneak + jump) are left alone. |
 | `rope.slide-speed` | `3` | blocks per second, 0.5 to 20 | Fastest a player slides down a rope while pressing neither jump nor sneak. Sneak hangs still (off the ground only). `3` is vanilla ladder speed. Fall distance is reset each tick the plugin moves the player. |
-| `rope.model` | `dwellermc:rope` | model id | Item model of one rope block, from the [resource pack](resource-pack.md). |
+| `rope.model` | `dwellermc:rope` | model id | Item model of one rope block, from the [resource pack](resource-pack.md). Currently the vanilla chain block model. |
 | `rope.hook-item` | `tripwire_hook` | item id | Vanilla item shown as the hook in flight and at the top of the rope. Not part of the resource pack. |
 | `rope.check-ticks` | `5` | ticks, 1 to 20 | How often ropes are checked: who is on them, cut ropes, broken anchors, despawn, mining boost. Lower reacts faster and costs more; despawn and cut timing are rounded to this step. Climbing itself runs every tick, whatever this is set to. |
 
@@ -138,7 +138,7 @@ Three mining tools built on netherite tools, each with its own top-level section
 | `enabled` | `true` | boolean | `false`: no recipe. Hammer: no square. Paxel: no dirt paths. Drill: anvils and grindstones still keep its Efficiency level, but it can no longer be repaired with its repair material in an anvil. Items players already own stay in their inventories and still work as plain netherite tools; a Paxel keeps its mining rules because they are stored on the item. |
 | `item.name` | `<white>Drill`, `<white>Hammer`, `<white>Paxel` | MiniMessage | Item name. |
 | `item.lore` | one grey line each | list of MiniMessage | Lore lines. |
-| `item.model` | `dwellermc:drill`, `dwellermc:hammer`, `dwellermc:paxel` | model id | Item model from the [resource pack](resource-pack.md). A model the pack does not have shows the plain netherite tool. |
+| `item.model` | `dwellermc:drill`, `dwellermc:hammer`, `dwellermc:paxel` | model id | Item model from the [resource pack](resource-pack.md). A model the pack does not have shows the plain netherite tool. With the pack the Drill and Hammer use the vanilla netherite pickaxe model and the Paxel the netherite axe model. |
 | `item.durability` | `2031` | uses, 1 to 100000 | Uses before it breaks. Vanilla netherite is 2031. Existing items keep their old maximum. |
 | `item.repair-material` | `netherite_ingot` | item id | Anvil repair material, 25% per item. An unknown id logs `Config <tool>.item.repair-material: unknown item ...` and the default is used. |
 | `recipe.enabled` | `true` | boolean | `false`: the tool can't be crafted. Other plugins can still give the item. |
@@ -189,7 +189,7 @@ Anvil rules, the same for all three: repair with `item.repair-material`, combine
 
 ## Interactions
 
-- **[DwellerCore](config-core.md#resource-pack)** sends the resource pack that holds the hook and rope textures. DwellerTools sends nothing itself. If `resource-pack.enabled` is `false`, deliver the pack some other way or players see the base items.
+- **[DwellerCore](config-core.md#resource-pack)** sends the resource pack that holds the hook, rope and tool item models. DwellerTools sends nothing itself. If `resource-pack.enabled` is `false`, deliver the pack some other way or players see the base items.
 - **[DwellerSurface](config-surface.md)**: the hook works in the surface world unless that world is in `disabled-worlds`.
 - **Light blocks and the climbable tag.** Players climb because the plugin moves them every tick (`rope.climb-speed`, `rope.slide-speed`), not because of the tag: some clients never receive the datapack's addition to `#minecraft:climbable` (seen on a Fabric client, where F3 lists no climbable tag on the rope). The tag still makes ropes climbable for mobs and keeps server-side fall checks in line. `minecraft:light` is in the tag only while the `dwellertools` datapack is loaded. A plugin or command that clears light blocks cuts ropes; the plugin notices at its next check and removes the rest of the rope.
 - **[WorldGuard](plugins/worldguard.md) and [CoreProtect](plugins/coreprotect.md)**: the plugin places rope blocks itself, not on behalf of the player, so region flags do not stop a rope and CoreProtect does not log it. To keep players from hooking a protected building, put its blocks in `grapple.excluded-blocks` or its world in `disabled-worlds`. Players breaking or placing blocks next to ropes are logged as usual.
@@ -231,7 +231,7 @@ Never rename or remove these. Existing items, entities and chunks carry them.
 |---|---|---|
 | Holding jump in a rope only makes the player hop | DwellerTools is an older build that relied on the climbable tag, which some clients never receive | Update DwellerTools and restart. |
 | Mobs don't climb ropes | The `dwellertools` datapack is not loaded (a `/reload`, or the jar was added to a running server) | Full restart. Check `/datapack list enabled`. |
-| Players see a carrot on a stick and string instead of the textures | The resource pack was not sent or not applied | See [resource pack troubleshooting](resource-pack.md#troubleshooting). |
+| Players see a carrot on a stick, string and plain netherite tools instead of the pack models (tripwire hook, chain, netherite pickaxe and axe) | The resource pack was not sent or not applied | See [resource pack troubleshooting](resource-pack.md#troubleshooting). |
 | Throws always fail with `The hook can't catch that` | `excluded-blocks`, a face switched off, or the target is not a full solid block | Check `grapple.ceiling`, `wall`, `ledge` and `excluded-blocks`. |
 | Log `Config grappling-hook.recipe: ...` | Bad shape or ingredient | Fix it; the default recipe is used meanwhile. |
 | Hooks made before a config change behave differently | Name, lore, base item, model, durability and repair material are stored on the item | Only new hooks get the new values. |
